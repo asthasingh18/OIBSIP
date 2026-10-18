@@ -1,0 +1,360 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Astha Singh's portfolio — Computer Engineering student exploring full-stack development, AI, and cybersecurity.">
+
+    <title>Astha Singh | Developer Portfolio</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <!-- Navigation -->
+    <header class="header">
+        <nav class="navbar container" aria-label="Main navigation">
+            <a href="#home" class="logo">AS<span>.</span></a>
+
+            <button class="menu-toggle"
+                    aria-label="Open navigation"
+                    aria-expanded="false"
+                    aria-controls="nav-links">
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="nav-links" id="nav-links">
+                <a href="#home">Home</a>
+                <a href="#about">About</a>
+                <a href="#skills">Skills</a>
+                <a href="#projects">Works</a>
+                <a href="#contact" class="nav-contact">Let's talk ↗</a>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Hero -->
+        <section class="hero section-dark" id="home">
+            <div class="hero-inner container">
+
+                <div class="hero-copy">
+                    <p class="eyebrow">
+                        <span class="status-dot"></span>
+                        Computer Engineering Student
+                    </p>
+
+                    <h1>
+                        Building ideas<br>
+                        into <span>real-world</span><br>
+                        experiences<span class="lime-dot">.</span>
+                    </h1>
+
+                    <p class="hero-description">
+                        Hi, I'm Astha — an aspiring software engineer passionate
+                        about full-stack development, AI, and solving meaningful
+                        problems through code.
+                    </p>
+
+                    <div class="hero-actions">
+                        <a href="#projects" class="button button-primary">
+                            Explore my work ↗
+                        </a>
+                        <a href="#contact" class="button button-outline">
+                            Let's connect
+                        </a>
+                    </div>
+
+                    <div class="hero-keywords">
+                        <span>JAVA</span>
+                        <span>FULL-STACK</span>
+                        <span>AI PROJECTS</span>
+                    </div>
+                </div>
+
+                <div class="hero-visual">
+                    <div class="portrait-frame">
+                        <div class="portrait-backdrop"></div>
+
+                        <!-- Keep astha.jpeg in this same project folder -->
+                        <img
+                            src="astha.jpeg"
+                            alt="Portrait of Astha Singh"
+                            class="hero-portrait"
+                        >
+
+                        <span class="portrait-label label-top">
+                            <span class="status-dot"></span> Developer in progress
+                        </span>
+
+                        <div class="portrait-caption">
+                            <span>Curious mind.</span>
+                            <span>Builder's mindset.</span>
+                        </div>
+                    </div>
+
+                    <span class="floating-tag tag-code">{" "} &lt;/ code&gt;</span>
+                    <span class="floating-tag tag-learning">✳ Always learning</span>
+                </div>
+
+                <div class="hero-index">PORTFOLIO / 2026</div>
+            </div>
+        </section>
+
+        <!-- About -->
+        <section class="about section-light" id="about">
+            <div class="container">
+                <p class="section-label">01 / ABOUT ME</p>
+
+                <div class="about-grid">
+                    <h2>
+                        Curiosity drives me.<br>
+                        <span>Code moves me.</span>
+                    </h2>
+
+                    <div class="about-copy">
+                        <p>
+                            I'm a third-year Computer Engineering student who
+                            enjoys building practical web applications and
+                            exploring how artificial intelligence can solve
+                            real-world challenges.
+                        </p>
+
+                        <p>
+                            From full-stack development to AI-powered projects,
+                            I love learning new technologies, collaborating with
+                            teams, and turning ideas into useful digital
+                            experiences.
+                        </p>
+
+                        <a href="#projects" class="text-link">
+                            Have a project in mind? Let's talk ↗
+                        </a>
+                    </div>
+                </div>
+
+                <div class="about-bottom">
+                    <span>LEARN. BUILD. IMPROVE.</span>
+                    <span>BASED IN INDIA · OPEN TO OPPORTUNITIES</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Skills -->
+        <section class="skills section-dark" id="skills">
+            <div class="container">
+                <p class="section-label">02 / MY TOOLKIT</p>
+
+                <div class="section-heading-row">
+                    <h2>Skills I bring <span>to the table.</span></h2>
+                    <p>Technologies and concepts I'm learning and using to build projects.</p>
+                </div>
+
+                <div class="skills-grid">
+                    <article class="skill-card">
+                        <span class="card-number">01</span>
+                        <h3>Programming</h3>
+                        <div class="skill-tags">
+                            <span>Java</span>
+                            <span>JavaScript</span>
+                            <span>Python</span>
+                        </div>
+                    </article>
+
+                    <article class="skill-card">
+                        <span class="card-number">02</span>
+                        <h3>Frontend</h3>
+                        <div class="skill-tags">
+                            <span>HTML5</span>
+                            <span>CSS3</span>
+                            <span>React.js</span>
+                            <span>Tailwind CSS</span>
+                        </div>
+                    </article>
+
+                    <article class="skill-card">
+                        <span class="card-number">03</span>
+                        <h3>Backend</h3>
+                        <div class="skill-tags">
+                            <span>Spring Boot</span>
+                            <span>Node.js</span>
+                            <span>REST APIs</span>
+                        </div>
+                    </article>
+
+                    <article class="skill-card">
+                        <span class="card-number">04</span>
+                        <h3>Databases & Tools</h3>
+                        <div class="skill-tags">
+                            <span>MySQL</span>
+                            <span>MongoDB</span>
+                            <span>Git</span>
+                            <span>GitHub</span>
+                        </div>
+                    </article>
+
+                    <article class="skill-card">
+                        <span class="card-number">05</span>
+                        <h3>Core Concepts</h3>
+                        <div class="skill-tags">
+                            <span>DSA</span>
+                            <span>OOP</span>
+                            <span>DBMS</span>
+                        </div>
+                    </article>
+
+                    <article class="skill-card">
+                        <span class="card-number">06</span>
+                        <h3>Exploring</h3>
+                        <div class="skill-tags">
+                            <span>Machine Learning</span>
+                            <span>Agentic AI</span>
+                            <span>NLP</span>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects -->
+        <section class="projects section-light" id="projects">
+            <div class="container">
+                <p class="section-label">03 / SELECTED WORK</p>
+
+                <div class="section-heading-row projects-heading">
+                    <h2>Ideas into <span>impact.</span></h2>
+                    <p>A selection of projects I've been building and exploring.</p>
+                </div>
+
+                <div class="project-grid">
+
+                    <article class="project-card project-featured">
+                        <div class="project-art art-saarthi">
+                            <span class="art-index">PROJECT / 01</span>
+                            <span class="art-symbol">S<span>.</span></span>
+                            <span class="art-bottom">AI · CAREER · LEARNING</span>
+                        </div>
+
+                        <div class="project-info">
+                            <p class="project-type">AI-POWERED PLATFORM</p>
+                            <h3>Saarthi AI</h3>
+                            <p>
+                                A placement-readiness platform featuring
+                                assessments, skill-gap recommendations,
+                                AI resume analysis, and mock interview feedback.
+                            </p>
+                            <div class="project-links">
+                                <a href="https://github.com/asthasingh18"
+                                   target="_blank" rel="noopener noreferrer">
+                                    GitHub profile ↗
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="project-card">
+                        <div class="project-art art-agentmaze">
+                            <span class="art-index">PROJECT / 02</span>
+                            <span class="maze-symbol">A<span>M</span></span>
+                            <span class="art-bottom">AGENTS · SECURITY · RESEARCH</span>
+                        </div>
+
+                        <div class="project-info">
+                            <p class="project-type">AGENT SECURITY LAB</p>
+                            <h3>AgentMaze</h3>
+                            <p>
+                                A controlled simulation environment for exploring
+                                AI-agent security risks, attack paths, and
+                                unexpected agent interactions.
+                            </p>
+                            <div class="project-links">
+                                <a href="https://github.com/asthasingh18/AgentMaze"
+                                   target="_blank" rel="noopener noreferrer">
+                                    Explore repository ↗
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                    <article class="project-card">
+                        <div class="project-art art-rental">
+                            <span class="art-index">PROJECT / 03</span>
+                            <span class="rental-symbol">R<span>.</span></span>
+                            <span class="art-bottom">LOCAL · RENTALS · ACCESS</span>
+                        </div>
+
+                        <div class="project-info">
+                            <p class="project-type">WEB APPLICATION</p>
+                            <h3>Rural Rental Platform</h3>
+                            <p>
+                                A rental platform concept connecting rural
+                                entrepreneurs in Maharashtra with equipment
+                                and resources through a multilingual interface.
+                            </p>
+                            <div class="project-links">
+                                <a href="https://rental-app-five-tau.vercel.app/"
+                                   target="_blank" rel="noopener noreferrer">
+                                    View live website ↗
+                                </a>
+                            </div>
+                        </div>
+                    </article>
+
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact -->
+        <section class="contact section-dark" id="contact">
+            <div class="container contact-inner">
+                <p class="section-label">04 / WHAT'S NEXT?</p>
+
+                <p class="contact-pretitle">I'M READY TO</p>
+                <h2>
+                    BUILD SOMETHING<br>
+                    <span>MEANINGFUL.</span>
+                </h2>
+
+                <p class="contact-description">
+                    Have an opportunity, an idea, or a project in mind?
+                    Let's connect and explore what we can build.
+                </p>
+
+                <!-- Replace this with your real email address -->
+                <a class="contact-cta"
+                   href="mailto:asthaasingh232@gmail.com">
+                    Let's talk <span>↗</span>
+                </a>
+
+                <div class="social-links">
+                    <a href="https://github.com/asthasingh18"
+                       target="_blank" rel="noopener noreferrer">GitHub ↗</a>
+
+                    <!-- Replace with your actual LinkedIn profile URL -->
+                    <a href="https://www.linkedin.com/in/astha-singh-tech"
+                       target="_blank" rel="noopener noreferrer">LinkedIn ↗</a>
+
+                    <a href="#home">Back to top ↑</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-inner">
+            <a href="#home" class="logo">AS<span>.</span></a>
+            <p>Designed & built by Astha Singh · 2026</p>
+            <span>LEARNING THROUGH BUILDING.</span>
+        </div>
+    </footer>
+
+</body>
+</html>
