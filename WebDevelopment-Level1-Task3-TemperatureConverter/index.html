@@ -1,0 +1,141 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A simple and elegant temperature converter for Celsius, Fahrenheit, and Kelvin.">
+    <title>Tempora — Temperature Converter</title>
+    <link rel="stylesheet" href="style.css">
+    <script src="script.js" defer></script>
+</head>
+<body>
+    <main class="page-wrapper">
+        <header class="topbar">
+            <a href="#" class="brand" aria-label="Tempora home">
+                <span class="brand-icon">°</span>
+                <span>tempora<span class="brand-dot">.</span></span>
+            </a>
+            <span class="topbar-label">TEMPERATURE CONVERTER</span>
+        </header>
+
+        <section class="hero">
+            <div class="hero-copy">
+                <span class="eyebrow">
+                    <span class="status-dot"></span>
+                    YOUR EVERYDAY TEMPERATURE TOOL
+                </span>
+                <h1>Every degree,<br>made <span>simple.</span></h1>
+                <p>Convert temperatures effortlessly between Celsius,
+                   Fahrenheit, and Kelvin in one place.</p>
+            </div>
+
+            <div class="weather-art" aria-hidden="true">
+                <div class="sun-glow"></div>
+                <div class="thermometer">
+                    <div class="thermometer-inner"></div>
+                    <div class="thermometer-bulb"></div>
+                </div>
+                <span class="floating-degree degree-one">°C</span>
+                <span class="floating-degree degree-two">°F</span>
+                <span class="floating-degree degree-three">K</span>
+            </div>
+        </section>
+
+        <section class="converter-panel" aria-labelledby="converter-title">
+            <div class="panel-heading">
+                <div>
+                    <span class="section-label">CONVERSION STUDIO</span>
+                    <h2 id="converter-title">Convert temperature</h2>
+                </div>
+                <span class="live-badge">
+                    <span class="status-dot"></span>
+                    Live tool
+                </span>
+            </div>
+
+            <form id="converter-form" novalidate>
+                <div class="input-grid">
+                    <div class="form-group">
+                        <label for="temperature">Temperature value</label>
+                        <input
+                            type="number"
+                            id="temperature"
+                            name="temperature"
+                            placeholder="e.g. 25"
+                            step="any"
+                            inputmode="decimal"
+                            aria-describedby="input-error"
+                            required
+                        >
+                        <small class="field-hint">Enter a number, including decimals or negatives.</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="input-unit">Convert from</label>
+                        <select id="input-unit" name="input-unit">
+                            <option value="celsius">Celsius (°C)</option>
+                            <option value="fahrenheit">Fahrenheit (°F)</option>
+                            <option value="kelvin">Kelvin (K)</option>
+                        </select>
+                        <small class="field-hint">Choose your starting unit.</small>
+                    </div>
+                </div>
+
+                <p id="input-error" class="error-message" role="alert" aria-live="polite"></p>
+
+                <button type="submit" class="convert-button">
+                    <span>Convert temperature</span>
+                    <span class="button-arrow" aria-hidden="true">→</span>
+                </button>
+            </form>
+
+            <div class="results-heading">
+                <div>
+                    <span class="section-label">YOUR RESULTS</span>
+                    <h3>Temperature equivalents</h3>
+                </div>
+                <span class="results-note">All units at once</span>
+            </div>
+
+            <div class="results-grid" aria-live="polite" aria-atomic="true">
+                <article class="result-card celsius-card">
+                    <div class="result-card-top">
+                        <span class="unit-symbol">°C</span>
+                        <span class="unit-name">CELSIUS</span>
+                    </div>
+                    <p class="result-value" id="celsius-result">—</p>
+                    <p class="result-description">Metric temperature scale</p>
+                </article>
+
+                <article class="result-card fahrenheit-card">
+                    <div class="result-card-top">
+                        <span class="unit-symbol">°F</span>
+                        <span class="unit-name">FAHRENHEIT</span>
+                    </div>
+                    <p class="result-value" id="fahrenheit-result">—</p>
+                    <p class="result-description">Commonly used in the US</p>
+                </article>
+
+                <article class="result-card kelvin-card">
+                    <div class="result-card-top">
+                        <span class="unit-symbol">K</span>
+                        <span class="unit-name">KELVIN</span>
+                    </div>
+                    <p class="result-value" id="kelvin-result">—</p>
+                    <p class="result-description">Scientific temperature scale</p>
+                </article>
+            </div>
+
+            <p id="result-status" class="result-status">
+                Enter a temperature above to get started.
+            </p>
+        </section>
+
+        <footer class="footer">
+            <span>© 2026 Tempora</span>
+            <span>Thoughtfully designed for everyday conversions.</span>
+        </footer>
+    </main>
+</body>
+</html>
