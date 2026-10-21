@@ -1,0 +1,198 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="A simple, elegant to-do app to organize your daily tasks and track your progress.">
+
+    <title>Dayora — Your Daily Task Planner</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Playfair+Display:wght@500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Main stylesheet -->
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <div class="app-shell">
+
+        <!-- Header -->
+        <header class="app-header">
+            <a href="#" class="brand" aria-label="Dayora home">
+                <span class="brand-mark" aria-hidden="true">d.</span>
+                <span>dayora</span>
+            </a>
+
+            <p class="header-note">A little progress, every day.</p>
+        </header>
+
+        <main>
+            <!-- Welcome section -->
+            <section class="welcome-section" aria-labelledby="page-title">
+                <div class="welcome-copy">
+                    <p class="eyebrow">YOUR PERSONAL TASK SPACE</p>
+
+                    <h1 id="page-title">
+                        Make room for<br>
+                        <span>what matters.</span>
+                    </h1>
+
+                    <p class="welcome-description">
+                        One task at a time. Keep your plans clear,
+                        celebrate your progress, and make today count.
+                    </p>
+                </div>
+
+                <div class="welcome-decoration" aria-hidden="true">
+                    <span class="decoration-sun"></span>
+                    <span class="decoration-leaf leaf-one"></span>
+                    <span class="decoration-leaf leaf-two"></span>
+                    <span class="decoration-leaf leaf-three"></span>
+                </div>
+            </section>
+
+            <!-- Task input -->
+            <section class="task-composer" aria-labelledby="composer-title">
+                <div class="composer-heading">
+                    <div>
+                        <p class="eyebrow">START SOMEWHERE</p>
+                        <h2 id="composer-title">What's on your mind?</h2>
+                    </div>
+
+                    <span class="composer-icon" aria-hidden="true">✳</span>
+                </div>
+
+                <form id="task-form">
+                    <label for="task-input" class="visually-hidden">
+                        Enter a task
+                    </label>
+
+                    <input
+                        type="text"
+                        id="task-input"
+                        name="task"
+                        placeholder="Add a task you want to accomplish..."
+                        maxlength="200"
+                        autocomplete="off"
+                        required
+                    >
+
+                    <button type="submit" id="add-task-btn">
+                        <span aria-hidden="true">+</span>
+                        Add task
+                    </button>
+                </form>
+
+                <p class="input-hint">
+                    Small steps lead to meaningful progress.
+                </p>
+
+                <p id="form-message" class="form-message" role="status"
+                   aria-live="polite"></p>
+            </section>
+
+            <!-- Progress summary -->
+            <section class="progress-section" aria-label="Task overview">
+                <div class="progress-copy">
+                    <p class="eyebrow">YOUR DAILY OVERVIEW</p>
+                    <h2>A day in progress</h2>
+                </div>
+
+                <div class="progress-stats">
+                    <div class="stat-card pending-stat">
+                        <span class="stat-icon" aria-hidden="true">◷</span>
+                        <div>
+                            <span class="stat-number" id="total-pending">0</span>
+                            <span class="stat-label">Pending</span>
+                        </div>
+                    </div>
+
+                    <div class="stat-card completed-stat">
+                        <span class="stat-icon" aria-hidden="true">✓</span>
+                        <div>
+                            <span class="stat-number" id="total-completed">0</span>
+                            <span class="stat-label">Completed</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Pending and completed task lists -->
+            <section class="task-lists" aria-label="Your tasks">
+
+                <!-- Pending tasks -->
+                <section class="task-panel" aria-labelledby="pending-title">
+                    <div class="list-heading">
+                        <div class="list-title-group">
+                            <span class="list-indicator pending-indicator"
+                                  aria-hidden="true"></span>
+                            <div>
+                                <h2 id="pending-title">Pending tasks</h2>
+                                <p>Things you're working towards</p>
+                            </div>
+                        </div>
+
+                        <span class="count-badge" id="pending-count">0 pending</span>
+                    </div>
+
+                    <ul class="task-list" id="pending-list"
+                        aria-label="Pending tasks">
+                    </ul>
+
+                    <div class="empty-state" id="pending-empty">
+                        <span class="empty-icon" aria-hidden="true">☀</span>
+                        <h3>Nothing on your plate</h3>
+                        <p>Add a task above and get your day moving.</p>
+                    </div>
+                </section>
+
+                <!-- Completed tasks -->
+                <section class="task-panel completed-panel"
+                         aria-labelledby="completed-title">
+                    <div class="list-heading">
+                        <div class="list-title-group">
+                            <span class="list-indicator completed-indicator"
+                                  aria-hidden="true"></span>
+                            <div>
+                                <h2 id="completed-title">Completed tasks</h2>
+                                <p>Look how far you've come</p>
+                            </div>
+                        </div>
+
+                        <span class="count-badge completed-badge"
+                              id="completed-count">0 completed</span>
+                    </div>
+
+                    <ul class="task-list" id="completed-list"
+                        aria-label="Completed tasks">
+                    </ul>
+
+                    <div class="empty-state" id="completed-empty">
+                        <span class="empty-icon" aria-hidden="true">✿</span>
+                        <h3>Your wins will live here</h3>
+                        <p>Complete a task to see it here.</p>
+                    </div>
+                </section>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer">
+            <p>Made with care, for your everyday.</p>
+            <span aria-hidden="true">✳</span>
+            <p>One thing at a time.</p>
+        </footer>
+
+    </div>
+
+    <!-- Main JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
