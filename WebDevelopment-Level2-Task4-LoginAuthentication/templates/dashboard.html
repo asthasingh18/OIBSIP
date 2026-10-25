@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Dashboard | Authentiq</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+
+<body>
+    <main class="dashboard-container">
+
+        <header class="dashboard-header">
+            <a href="{{ url_for('dashboard') }}" class="dashboard-brand">
+                <span class="brand-icon">✦</span>
+                AUTHENTIQ
+            </a>
+
+            <form action="{{ url_for('logout') }}" method="POST">
+                <button type="submit" class="logout-button">
+                    Log out <span aria-hidden="true">↗</span>
+                </button>
+            </form>
+        </header>
+
+        <section class="dashboard-content">
+
+            <div class="welcome-label">
+                <span class="status-dot"></span>
+                SECURE SESSION ACTIVE
+            </div>
+
+            <h1>Welcome back,<br><span>{{ username }}</span>.</h1>
+
+            <p class="dashboard-description">
+                You're signed in and all set. Your personal space is ready
+                whenever you are.
+            </p>
+
+            <div class="account-card">
+                <div class="account-card-heading">
+                    <div>
+                        <p class="eyebrow">YOUR ACCOUNT</p>
+                        <h2>Account overview</h2>
+                    </div>
+
+                    <div class="account-symbol">✦</div>
+                </div>
+
+                <div class="account-detail">
+                    <span>Username</span>
+                    <strong>{{ username }}</strong>
+                </div>
+
+                <div class="account-detail">
+                    <span>Email address</span>
+                    <strong>{{ email }}</strong>
+                </div>
+
+                <div class="account-detail">
+                    <span>Account status</span>
+                    <strong class="verified-status">
+                        <span class="status-dot"></span>
+                        Authenticated
+                    </strong>
+                </div>
+            </div>
+
+            <div class="security-card">
+                <div class="security-icon">◆</div>
+                <div>
+                    <h3>Your security matters</h3>
+                    <p>
+                        Your password is stored as a hash, and this dashboard
+                        requires an active login session.
+                    </p>
+                </div>
+            </div>
+
+            <p class="dashboard-footer">
+                MADE WITH CARE · PRIVATE BY DESIGN
+            </p>
+
+        </section>
+
+    </main>
+</body>
+</html>

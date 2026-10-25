@@ -1,0 +1,130 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Account | Authentiq</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}"
+            defer></script>
+</head>
+
+<body>
+    <main class="auth-container">
+
+        <section class="visual-panel">
+            <div class="brand">
+                <span class="brand-icon">✦</span>
+                <span>AUTHENTIQ</span>
+            </div>
+
+            <div class="visual-content">
+                <div class="lock-glow">
+                    <div class="lock-shackle"></div>
+                    <div class="lock-body">
+                        <span class="lock-keyhole"></span>
+                    </div>
+                </div>
+
+                <h1>A safer space<br>starts with you.</h1>
+                <p>Create your account and take the first step towards a more secure experience.</p>
+            </div>
+
+            <p class="panel-footer">PRIVATE BY DESIGN · SECURE BY DEFAULT</p>
+        </section>
+
+        <section class="form-panel">
+            <div class="form-content">
+
+                <p class="eyebrow">GET STARTED</p>
+                <h2>Create your account</h2>
+                <p class="form-subtitle">
+                    A few details are all it takes to get started.
+                </p>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert {{ category }}" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form action="{{ url_for('register') }}" method="POST">
+
+                    <div class="form-group">
+                        <label for="username">Username</label>
+                        <input
+                            type="text"
+                            id="username"
+                            name="username"
+                            placeholder="Choose a username"
+                            autocomplete="username"
+                            maxlength="50"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email address</label>
+                        <input
+                            type="email"
+                            id="email"
+                            name="email"
+                            placeholder="you@example.com"
+                            autocomplete="email"
+                            maxlength="254"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="At least 8 characters and 1 number"
+                            autocomplete="new-password"
+                            minlength="8"
+                            required>
+                        <small class="field-hint">
+                            Use at least 8 characters and include a number.
+                        </small>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="confirm_password">Confirm password</label>
+                        <input
+                            type="password"
+                            id="confirm_password"
+                            name="confirm_password"
+                            placeholder="Enter your password again"
+                            autocomplete="new-password"
+                            required>
+                    </div>
+
+                    <button type="submit" class="primary-button">
+                        Create account <span aria-hidden="true">→</span>
+                    </button>
+                </form>
+
+                <p class="switch-auth">
+                    Already have an account?
+                    <a href="{{ url_for('login') }}">Sign in</a>
+                </p>
+
+                <p class="security-note">
+                    <span aria-hidden="true">◆</span>
+                    Your password is securely hashed before storage.
+                </p>
+
+            </div>
+        </section>
+
+    </main>
+</body>
+</html>

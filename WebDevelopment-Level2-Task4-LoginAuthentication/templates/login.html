@@ -1,0 +1,103 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome Back | Authentiq</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+    <script src="{{ url_for('static', filename='js/script.js') }}"
+            defer></script>
+</head>
+
+<body>
+    <main class="auth-container">
+
+        <!-- Left visual panel -->
+        <section class="visual-panel">
+            <div class="brand">
+                <span class="brand-icon">✦</span>
+                <span>AUTHENTIQ</span>
+            </div>
+
+            <div class="visual-content">
+                <div class="lock-glow">
+                    <div class="lock-shackle"></div>
+                    <div class="lock-body">
+                        <span class="lock-keyhole"></span>
+                    </div>
+                </div>
+
+                <h1>Your space.<br>Your security.</h1>
+                <p>A little peace of mind starts with a secure sign-in.</p>
+            </div>
+
+            <p class="panel-footer">PRIVATE BY DESIGN · SECURE BY DEFAULT</p>
+        </section>
+
+        <!-- Right login form -->
+        <section class="form-panel">
+            <div class="form-content">
+
+                <p class="eyebrow">WELCOME BACK</p>
+                <h2>Sign in to your account</h2>
+                <p class="form-subtitle">
+                    Enter your details to continue where you left off.
+                </p>
+
+                {% with messages = get_flashed_messages(with_categories=true) %}
+                    {% if messages %}
+                        {% for category, message in messages %}
+                            <div class="alert {{ category }}" role="alert">
+                                {{ message }}
+                            </div>
+                        {% endfor %}
+                    {% endif %}
+                {% endwith %}
+
+                <form action="{{ url_for('login') }}" method="POST">
+                    <div class="form-group">
+                        <label for="identifier">Username or email</label>
+                        <input
+                            type="text"
+                            id="identifier"
+                            name="identifier"
+                            placeholder="Enter your username or email"
+                            autocomplete="username"
+                            maxlength="254"
+                            required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">Password</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required>
+                    </div>
+
+                    <button type="submit" class="primary-button">
+                        Sign in <span aria-hidden="true">→</span>
+                    </button>
+                </form>
+
+                <p class="switch-auth">
+                    New here?
+                    <a href="{{ url_for('register') }}">Create an account</a>
+                </p>
+
+                <p class="security-note">
+                    <span aria-hidden="true">◆</span>
+                    Your account is protected with password hashing.
+                </p>
+            </div>
+        </section>
+
+    </main>
+</body>
+</html>
