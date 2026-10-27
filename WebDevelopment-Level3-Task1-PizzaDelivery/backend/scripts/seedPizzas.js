@@ -38,6 +38,24 @@ const samplePizzas = [
     category: "Non-Veg",
     ingredients: ["Chicken", "Capsicum", "Mozzarella", "Tomato Sauce"],
   },
+  
+  {
+    name: "BBQ Chicken",
+    description: "Smoky barbecue sauce topped with grilled chicken, onions, and mozzarella.",
+    price: 399,
+    image: "https://images.unsplash.com/photo-1571407970349-bc81e7e96d47?auto=format&fit=crop&w=600&q=80",
+    category: "Non-Veg",
+    ingredients: ["Grilled Chicken", "BBQ Sauce", "Onion", "Mozzarella"],
+  },
+  {
+    name: "Mexican Green Wave",
+    description: "A flavorful vegetarian pizza loaded with capsicum, jalapenos, onions, and cheese.",
+    price: 349,
+    image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=600&q=80",
+    category: "Veg",
+    ingredients: ["Capsicum", "Jalapenos", "Onion", "Mozzarella", "Mexican Herbs"],
+  },
+
 ];
 
 const seedPizzas = async () => {

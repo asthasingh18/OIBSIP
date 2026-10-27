@@ -8,7 +8,7 @@ function App() {
   const [orders, setOrders] = useState([]);
   const [error, setError] = useState("");
   const [cart, setCart] = useState([]);
-  
+
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [deliveryAddress, setDeliveryAddress] = useState("");
@@ -16,78 +16,107 @@ function App() {
   const [orderMessage, setOrderMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
 
-
-  
-const addToCart = (pizza) => {
-  setCart((prevCart) => {
-    const existingPizza = prevCart.find(
-      (item) => item._id === pizza._id
-    );
-
-    if (existingPizza) {
-      return prevCart.map((item) =>
-        item._id === pizza._id
-          ? { ...item, quantity: item.quantity + 1 }
-          : item
+  // Add a pizza to the cart
+  const addToCart = (pizza) => {
+    setCart((prevCart) => {
+      const existingPizza = prevCart.find(
+        (item) => item._id === pizza._id
       );
-    }
 
-    return [...prevCart, { ...pizza, quantity: 1 }];
-  });
-};
+      if (existingPizza) {
+        return prevCart.map((item) =>
+          item._id === pizza._id
+            ? { ...item, quantity: item.quantity + 1 }
+            : item
+        );
+      }
 
-
-const placeOrder = async (event) => {
-  event.preventDefault();
-
-  if (cart.length === 0) {
-    setOrderMessage("Please add a pizza to your cart.");
-    return;
-  }
-
-  setSubmitting(true);
-  setOrderMessage("");
-
-  try {
-    const response = await fetch("http://localhost:5000/api/orders", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        customerName,
-        customerPhone,
-        deliveryAddress,
-        items: cart.map((pizza) => ({
-          pizzaId: pizza._id,
-          quantity: pizza.quantity,
-        })),
-      }),
+      return [...prevCart, { ...pizza, quantity: 1 }];
     });
+  };
 
-    const data = await response.json();
+  // Fetch all orders
+  // IMPORTANT: This function must remain outside useEffect
+  // so the Refresh Orders button can access it.
+  const fetchOrders = async () => {
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/orders"
+      );
 
-    if (!response.ok) {
-      throw new Error(data.message || "Failed to place order.");
+      if (!response.ok) {
+        throw new Error("Failed to fetch orders");
+      }
+
+      const data = await response.json();
+      console.log("Orders received:", data);
+      setOrders(data.orders);
+    } catch (err) {
+      console.error("Unable to load orders:", err.message);
+    }
+  };
+
+  // Place a new order
+  const placeOrder = async (event) => {
+    event.preventDefault();
+
+    if (cart.length === 0) {
+      setOrderMessage("Please add a pizza to your cart.");
+      return;
     }
 
-    setOrderMessage(
-      `Order placed successfully! Order ID: ${data.order._id}`
-    );
+    setSubmitting(true);
+    setOrderMessage("");
 
-    setCart([]);
-    setCustomerName("");
-    setCustomerPhone("");
-    setDeliveryAddress("");
-  } catch (error) {
-    setOrderMessage(error.message || "Unable to place your order.");
-  } finally {
-    setSubmitting(false);
-  }
-};
+    try {
+      const response = await fetch(
+        "http://localhost:5000/api/orders",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            customerName,
+            customerPhone,
+            deliveryAddress,
+            items: cart.map((pizza) => ({
+              pizzaId: pizza._id,
+              quantity: pizza.quantity,
+            })),
+          }),
+        }
+      );
 
+      const data = await response.json();
 
+      if (!response.ok) {
+        throw new Error(
+          data.message || "Failed to place order."
+        );
+      }
 
+      setOrderMessage(
+        `Order placed successfully! Order ID: ${data.order._id}`
+      );
+
+      setCart([]);
+      setCustomerName("");
+      setCustomerPhone("");
+      setDeliveryAddress("");
+
+      // Update order history immediately after placing an order.
+      await fetchOrders();
+    } catch (err) {
+      setOrderMessage(
+        err.message || "Unable to place your order."
+      );
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  // Load pizzas and orders when the app opens
   useEffect(() => {
     const fetchPizzas = async () => {
       try {
@@ -102,23 +131,11 @@ const placeOrder = async (event) => {
         const data = await response.json();
         setPizzas(data.pizzas);
       } catch (err) {
-        setError("Unable to load pizzas. Please check the backend.");
+        setError(
+          "Unable to load pizzas. Please check the backend."
+        );
       } finally {
         setLoading(false);
-      }
-    };
-    const fetchOrders = async () => {
-      try {
-        const response = await fetch("http://localhost:5000/api/orders");
-
-        if (!response.ok) {
-          throw new Error("Failed to fetch orders");
-        }
-
-        const data = await response.json();
-        setOrders(data.orders);
-      } catch (err) {
-        console.error("Unable to load orders:", err.message);
       }
     };
 
@@ -126,15 +143,22 @@ const placeOrder = async (event) => {
     fetchOrders();
   }, []);
 
+  const cartTotal = cart.reduce(
+    (total, pizza) =>
+      total + pizza.price * pizza.quantity,
+    0
+  );
+
   return (
     <div className="app">
       <header className="header">
-        <h1>🍕 Pizza Paradise</h1>
-        <p>Freshly baked happiness, delivered to you.</p>
+        <h1>🍕 SliceCraft</h1>
+        <p>Crafted with love. Delivered in every slice.</p>
+
         <p className="cart-count">
-    🛒  Cart: {cart.length} {cart.length === 1 ? "item" : "items"}
+          🛒 Cart: {cart.length}{" "}
+          {cart.length === 1 ? "item" : "items"}
         </p>
-        <p aria-live="polite">Cart: {cart.length} {cart.length === 1 ? "pizza" : "pizzas"}</p>
       </header>
 
       <main className="menu">
@@ -154,7 +178,10 @@ const placeOrder = async (event) => {
               <img src={pizza.image} alt={pizza.name} />
 
               <div className="pizza-info">
-                <span className="category">{pizza.category}</span>
+                <span className="category">
+                  {pizza.category}
+                </span>
+
                 <h3>{pizza.name}</h3>
                 <p>{pizza.description}</p>
 
@@ -164,12 +191,15 @@ const placeOrder = async (event) => {
 
                 <div className="pizza-footer">
                   <strong>₹{pizza.price}</strong>
+
                   <button
                     type="button"
                     disabled={!pizza.isAvailable}
                     onClick={() => addToCart(pizza)}
                   >
-                    {pizza.isAvailable ? "Add to Cart" : "Unavailable"}
+                    {pizza.isAvailable
+                      ? "Add to Cart"
+                      : "Unavailable"}
                   </button>
                 </div>
               </div>
@@ -177,81 +207,92 @@ const placeOrder = async (event) => {
           ))}
         </div>
 
-        <section className="cart-section" aria-labelledby="cart-heading">
+        {/* Shopping Cart and Checkout */}
+        <section
+          className="cart-section"
+          aria-labelledby="cart-heading"
+        >
           <h2 id="cart-heading">Your Cart</h2>
 
           {cart.length === 0 ? (
             <p>Your cart is empty.</p>
           ) : (
             <>
-              {cart.map((pizza, index) => (
-                
-<div className="cart-item" key={pizza._id}>
-  <span>{pizza.name}</span>
+              {cart.map((pizza) => (
+                <div className="cart-item" key={pizza._id}>
+                  <span>{pizza.name}</span>
 
-  <div className="quantity-controls">
-    <button
-      type="button"
-      onClick={() => {
-        setCart((prevCart) =>
-          prevCart
-            .map((item) =>
-              item._id === pizza._id
-                ? { ...item, quantity: item.quantity - 1 }
-                : item
-            )
-            .filter((item) => item.quantity > 0)
-        );
-      }}
-    >
-      −
-    </button>
+                  <div className="quantity-controls">
+                    <button
+                      type="button"
+                      aria-label={`Decrease ${pizza.name} quantity`}
+                      onClick={() => {
+                        setCart((prevCart) =>
+                          prevCart
+                            .map((item) =>
+                              item._id === pizza._id
+                                ? {
+                                    ...item,
+                                    quantity:
+                                      item.quantity - 1,
+                                  }
+                                : item
+                            )
+                            .filter(
+                              (item) => item.quantity > 0
+                            )
+                        );
+                      }}
+                    >
+                      −
+                    </button>
 
-    <span>{pizza.quantity}</span>
+                    <span>{pizza.quantity}</span>
 
-    <button
-      type="button"
-      onClick={() => {
-        setCart((prevCart) =>
-          prevCart.map((item) =>
-            item._id === pizza._id
-              ? { ...item, quantity: item.quantity + 1 }
-              : item
-          )
-        );
-      }}
-    >
-      +
-    </button>
-  </div>
+                    <button
+                      type="button"
+                      aria-label={`Increase ${pizza.name} quantity`}
+                      onClick={() => {
+                        setCart((prevCart) =>
+                          prevCart.map((item) =>
+                            item._id === pizza._id
+                              ? {
+                                  ...item,
+                                  quantity:
+                                    item.quantity + 1,
+                                }
+                              : item
+                          )
+                        );
+                      }}
+                    >
+                      +
+                    </button>
+                  </div>
 
-  <strong>₹{pizza.price * pizza.quantity}</strong>
-</div>
-
+                  <strong>
+                    ₹{pizza.price * pizza.quantity}
+                  </strong>
+                </div>
               ))}
 
               <div className="cart-total">
-                <strong>
-                  Total: ₹{cart.reduce(
-                      (total, pizza) => total + pizza.price * pizza.quantity,
-                      0
-                    )}
-                </strong>
+                <strong>Total: ₹{cartTotal}</strong>
               </div>
-              
-              
-              
-                <form
-                  className="checkout-form"
-                  onSubmit={placeOrder}
-                >
 
+              <form
+                className="checkout-form"
+                onSubmit={placeOrder}
+              >
                 <h3>Delivery Details</h3>
-                
+
                 {orderMessage && (
                   <p
+                    aria-live="polite"
                     className={
-                      orderMessage.startsWith("Order placed successfully!")
+                      orderMessage.startsWith(
+                        "Order placed successfully!"
+                      )
                         ? "order-success"
                         : "order-error"
                     }
@@ -260,12 +301,13 @@ const placeOrder = async (event) => {
                   </p>
                 )}
 
-
                 <input
                   type="text"
                   placeholder="Full Name"
                   value={customerName}
-                  onChange={(event) => setCustomerName(event.target.value)}
+                  onChange={(event) =>
+                    setCustomerName(event.target.value)
+                  }
                   required
                 />
 
@@ -273,7 +315,9 @@ const placeOrder = async (event) => {
                   type="tel"
                   placeholder="Phone Number"
                   value={customerPhone}
-                  onChange={(event) => setCustomerPhone(event.target.value)}
+                  onChange={(event) =>
+                    setCustomerPhone(event.target.value)
+                  }
                   pattern="[0-9]{10}"
                   title="Enter a 10-digit phone number"
                   required
@@ -282,7 +326,9 @@ const placeOrder = async (event) => {
                 <textarea
                   placeholder="Full Delivery Address"
                   value={deliveryAddress}
-                  onChange={(event) => setDeliveryAddress(event.target.value)}
+                  onChange={(event) =>
+                    setDeliveryAddress(event.target.value)
+                  }
                   rows="3"
                   required
                 />
@@ -292,50 +338,65 @@ const placeOrder = async (event) => {
                   className="checkout-button"
                   disabled={submitting}
                 >
-                  {submitting ? "Placing Order..." : "Place Order"}
+                  {submitting
+                    ? "Placing Order..."
+                    : "Place Order"}
                 </button>
-
               </form>
-
-
             </>
           )}
         </section>
-        <section className="cart-section">
-          <h2>Order History</h2>
+
+        {/* Order History */}
+        <section
+          className="cart-section"
+          aria-labelledby="order-history-heading"
+        >
+          <h2 id="order-history-heading">Order History</h2>
+
+          <button
+            type="button"
+            className="checkout-button"
+            onClick={fetchOrders}
+          >
+  Refresh Orders
+</button>
 
           {orders.length === 0 ? (
             <p>No orders found yet.</p>
           ) : (
-            orders.map((order) => (
-              <div className="cart-item" key={order._id}>
-                <div>
-                  <strong>Order ID:</strong>
-                  <p>{order._id}</p>
+            <>
+              {orders.map((order) => (
+                <div className="cart-item order-history-item" key={order._id}>
+                  <div>
+                    <strong>Order ID:</strong>
+                    <p>{order._id}</p>
 
-                  <strong>Customer:</strong>
-                  <p>{order.customerName}</p>
+                    <strong>Customer:</strong>
+                    <p>{order.customerName}</p>
 
-                  <strong>Items:</strong>
-                  {order.items.map((item, index) => (
-                    <p key={index}>
-                      {item.name} × {item.quantity}
-                    </p>
-                  ))}
+                    <strong>Items:</strong>
+
+                    {order.items.map((item, index) => (
+                      <p key={`${order._id}-${index}`}>
+                        {item.name} × {item.quantity}
+                      </p>
+                    ))}
+                  </div>
+
+                  <div>
+                    <strong>
+                      Total: ₹{order.totalAmount}
+                    </strong>
+                    <p>Status: {order.status}</p>
+                  </div>
                 </div>
+              ))}
 
-                <div>
-                  <strong>Total: ₹{order.totalAmount}</strong>
-                  <p>Status: {order.status}</p>
-                </div>
-              </div>
-            ))
-          )}
-
-          {orders.length === 0 ? (
-            <p>No orders found yet.</p>
-          ) : (
-            <p>You have placed {orders.length} order(s).</p>
+              <p>
+                You have placed {orders.length} order(s).
+              </p>
+            </>
           )}
         </section>
       </main>
