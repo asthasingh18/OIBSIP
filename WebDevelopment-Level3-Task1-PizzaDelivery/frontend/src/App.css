@@ -535,3 +535,87 @@ button {
     animation-iteration-count: 1 !important;
   }
 }
+
+/* Order status controls */
+.order-status-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 180px;
+}
+
+.order-status-controls p {
+  margin: 0;
+}
+
+.order-status-controls select {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  background-color: #ffffff;
+  color: #1f2937;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.order-status-controls button {
+  padding: 10px 14px;
+  border: none;
+  border-radius: 8px;
+  background-color: #e85d04;
+  color: #ffffff;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.order-status-controls button:hover {
+  background-color: #c94c00;
+}
+
+.order-status-controls button:disabled {
+  background-color: #9ca3af;
+  cursor: not-allowed;
+}
+
+/* Order status badges */
+.status-badge {
+  display: inline-block;
+  padding: 5px 10px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.status-pending {
+  background-color: #fff3cd;
+  color: #856404;
+}
+
+.status-confirmed {
+  background-color: #d1ecf1;
+  color: #0c5460;
+}
+
+.status-preparing {
+  background-color: #dbeafe;
+  color: #1d4ed8;
+}
+
+.status-out-for-delivery {
+  background-color: #ede9fe;
+  color: #6d28d9;
+}
+
+.status-delivered {
+  background-color: #d1fae5;
+  color: #065f46;
+}
+
+.status-cancelled {
+  background-color: #fee2e2;
+  color: #991b1b;
+}

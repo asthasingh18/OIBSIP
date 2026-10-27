@@ -56,6 +56,36 @@ function App() {
     }
   };
 
+  
+  // Update an order's status
+  const updateOrderStatus = async (orderId, status) => {
+    try {
+      const response = await fetch(
+        `http://localhost:5000/api/orders/${orderId}/status`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status }),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Failed to update order status.");
+      }
+
+      // Refresh Order History after a successful update
+      await fetchOrders();
+      alert(data.message);
+    } catch (err) {
+      alert(err.message || "Unable to update order status.");
+    }
+  };
+
+
   // Place a new order
   const placeOrder = async (event) => {
     event.preventDefault();
@@ -384,12 +414,57 @@ function App() {
                     ))}
                   </div>
 
-                  <div>
-                    <strong>
-                      Total: ₹{order.totalAmount}
-                    </strong>
-                    <p>Status: {order.status}</p>
+                  <div className="order-status-controls">
+                    <strong>Total: ₹{order.totalAmount}</strong>
+
+                    Current status: {" "}
+                    <span
+                      className={`status-badge status-${order.status
+                        .toLowerCase()
+                        .replaceAll(" ", "-")}`}
+                    >
+                      {order.status}
+                    </span>
+
+                    <select
+                      value={order.status}
+                      onChange={(event) =>
+                        setOrders((prevOrders) =>
+                          prevOrders.map((item) =>
+                            item._id === order._id
+                              ? { ...item, selectedStatus: event.target.value }
+                              : item
+                          )
+                        )
+                      }
+                    >
+                      {[
+                        "Pending",
+                        "Confirmed",
+                        "Preparing",
+                        "Out for Delivery",
+                        "Delivered",
+                        "Cancelled",
+                      ].map((status) => (
+                        <option key={status} value={status}>
+                          {status}
+                        </option>
+                      ))}
+                    </select>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        updateOrderStatus(
+                          order._id,
+                          order.selectedStatus || order.status
+                        )
+                      }
+                    >
+                      Update Status
+                    </button>
                   </div>
+
                 </div>
               ))}
 
