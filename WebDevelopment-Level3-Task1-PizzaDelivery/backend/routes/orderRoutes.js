@@ -4,6 +4,10 @@ const router = express.Router();
 
 const Pizza = require("../models/Pizza");
 const Order = require("../models/Order");
+const {
+  protect,
+  authorizeRoles,
+} = require("../middleware/authMiddleware");
 
 // POST: Create a new order
 router.post("/", async (req, res) => {
@@ -16,9 +20,12 @@ router.post("/", async (req, res) => {
     } = req.body;
 
     if (
-      !customerName?.trim() ||
-      !customerPhone?.trim() ||
-      !deliveryAddress?.trim()
+      typeof customerName !== "string" ||
+      typeof customerPhone !== "string" ||
+      typeof deliveryAddress !== "string" ||
+      !customerName.trim() ||
+      !customerPhone.trim() ||
+      !deliveryAddress.trim()
     ) {
       return res.status(400).json({
         success: false,
@@ -105,83 +112,91 @@ router.post("/", async (req, res) => {
   }
 });
 
- 
-// GET: Fetch all orders
-router.get("/", async (req, res) => {
-  try {
-    const orders = await Order.find().sort({ createdAt: -1 });
+// GET: Fetch all orders (admin only)
+router.get(
+  "/",
+  protect,
+  authorizeRoles("admin"),
+  async (req, res) => {
+    try {
+      const orders = await Order.find().sort({ createdAt: -1 });
 
-    res.status(200).json({
-      success: true,
-      count: orders.length,
-      orders,
-    });
-  } catch (error) {
-    console.error("Fetching orders failed:", error.message);
+      return res.status(200).json({
+        success: true,
+        count: orders.length,
+        orders,
+      });
+    } catch (error) {
+      console.error("Fetching orders failed:", error.message);
 
-    res.status(500).json({
-      success: false,
-      message: "Failed to fetch orders.",
-    });
+      return res.status(500).json({
+        success: false,
+        message: "Failed to fetch orders.",
+      });
+    }
   }
-});
+);
 
-// PATCH: Update an order's status
-router.patch("/:id/status", async (req, res) => {
-  try {
-    const { id } = req.params;
-    const { status } = req.body;
+// PATCH: Update an order's status (admin only)
+router.patch(
+  "/:id/status",
+  protect,
+  authorizeRoles("admin"),
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { status } = req.body;
 
-    const allowedStatuses = [
-      "Pending",
-      "Confirmed",
-      "Preparing",
-      "Out for Delivery",
-      "Delivered",
-      "Cancelled",
-    ];
+      const allowedStatuses = [
+        "Pending",
+        "Confirmed",
+        "Preparing",
+        "Out for Delivery",
+        "Delivered",
+        "Cancelled",
+      ];
 
-    if (!/^[a-f\d]{24}$/i.test(id)) {
-      return res.status(400).json({
+      if (!/^[a-f\d]{24}$/i.test(id)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid order ID.",
+        });
+      }
+
+      if (!allowedStatuses.includes(status)) {
+        return res.status(400).json({
+          success: false,
+          message: "Invalid order status.",
+        });
+      }
+
+      const order = await Order.findByIdAndUpdate(
+        id,
+        { status },
+        { new: true, runValidators: true }
+      );
+
+      if (!order) {
+        return res.status(404).json({
+          success: false,
+          message: "Order not found.",
+        });
+      }
+
+      return res.status(200).json({
+        success: true,
+        message: `Order status updated to ${status}.`,
+        order,
+      });
+    } catch (error) {
+      console.error("Updating order status failed:", error.message);
+
+      return res.status(500).json({
         success: false,
-        message: "Invalid order ID.",
+        message: "Failed to update order status.",
       });
     }
-
-    if (!allowedStatuses.includes(status)) {
-      return res.status(400).json({
-        success: false,
-        message: "Invalid order status.",
-      });
-    }
-
-    const order = await Order.findByIdAndUpdate(
-      id,
-      { status },
-      { new: true, runValidators: true }
-    );
-
-    if (!order) {
-      return res.status(404).json({
-        success: false,
-        message: "Order not found.",
-      });
-    }
-
-    return res.status(200).json({
-      success: true,
-      message: `Order status updated to ${status}.`,
-      order,
-    });
-  } catch (error) {
-    console.error("Updating order status failed:", error.message);
-
-    return res.status(500).json({
-      success: false,
-      message: "Failed to update order status.",
-    });
   }
-});
-
+);
 
 module.exports = router;
