@@ -10,14 +10,21 @@ const {
 } = require("../middleware/authMiddleware");
 
 // POST: Create a new order
-router.post("/", async (req, res) => {
+router.post("/", protect, async (req, res) => {
   try {
     const {
       customerName,
       customerPhone,
       deliveryAddress,
+      paymentMethod = "COD",
       items,
     } = req.body;
+    if (!["COD", "Online"].includes(paymentMethod)) {
+  return res.status(400).json({
+    success: false,
+    message: "Invalid payment method.",
+  });
+}
 
     if (
       typeof customerName !== "string" ||
@@ -90,11 +97,18 @@ router.post("/", async (req, res) => {
     }
 
     const order = await Order.create({
+      userId: req.user ? req.user._id : null,
       customerName: customerName.trim(),
       customerPhone: customerPhone.trim(),
       deliveryAddress: deliveryAddress.trim(),
       items: orderItems,
       totalAmount,
+      paymentMethod,
+      paymentStatus: "Pending",
+      paymentReference:
+        paymentMethod === "Online"
+          ? `MOCK-${Date.now()}`
+          : null,
     });
 
     return res.status(201).json({
@@ -111,31 +125,96 @@ router.post("/", async (req, res) => {
     });
   }
 });
+// POST: Simulate online payment (DEMO ONLY)
+router.post("/:id/mock-payment", protect, async (req, res) => {
+  try {
+    const { id } = req.params;
 
-// GET: Fetch all orders (admin only)
-router.get(
-  "/",
-  protect,
-  authorizeRoles("admin"),
-  async (req, res) => {
-    try {
-      const orders = await Order.find().sort({ createdAt: -1 });
-
-      return res.status(200).json({
-        success: true,
-        count: orders.length,
-        orders,
-      });
-    } catch (error) {
-      console.error("Fetching orders failed:", error.message);
-
-      return res.status(500).json({
+    if (!/^[a-f\d]{24}$/i.test(id)) {
+      return res.status(400).json({
         success: false,
-        message: "Failed to fetch orders.",
+        message: "Invalid order ID.",
       });
     }
+
+    const order = await Order.findById(id);
+
+    if (!order) {
+      return res.status(404).json({
+        success: false,
+        message: "Order not found.",
+      });
+    }
+
+    if (
+      req.user.role !== "admin" &&
+      order.userId?.toString() !== req.user._id.toString()
+    ) {
+      return res.status(403).json({
+        success: false,
+        message: "You do not have permission to pay for this order.",
+      });
+    }
+
+    if (order.paymentMethod !== "Online") {
+      return res.status(400).json({
+        success: false,
+        message: "This order does not use online payment.",
+      });
+    }
+
+    if (order.paymentStatus !== "Pending") {
+      return res.status(400).json({
+        success: false,
+        message: "Payment has already been processed.",
+      });
+    }
+
+    order.paymentStatus = "Paid";
+    order.paymentId = `MOCK-PAY-${Date.now()}`;
+
+    await order.save();
+
+    return res.status(200).json({
+      success: true,
+      message: "Demo payment successful!",
+      order,
+    });
+  } catch (error) {
+    console.error("Mock payment failed:", error.message);
+
+    return res.status(500).json({
+      success: false,
+      message: "Unable to process demo payment.",
+    });
   }
-);
+});
+
+// GET: Fetch orders (customers see their own, admins see all)
+router.get("/", protect, async (req, res) => {
+  try {
+    const filter =
+      req.user.role === "admin"
+        ? {}
+        : { userId: req.user._id };
+
+    const orders = await Order.find(filter).sort({ createdAt: -1 });
+
+    return res.status(200).json({
+      success: true,
+      count: orders.length,
+      orders,
+    });
+  } catch (error) {
+    console.error("Fetching orders failed:", error.message);
+
+    return res.status(500).json({
+      success: false,
+      message: "Failed to fetch orders.",
+    });
+  }
+});
+
 
 // PATCH: Update an order's status (admin only)
 router.patch(

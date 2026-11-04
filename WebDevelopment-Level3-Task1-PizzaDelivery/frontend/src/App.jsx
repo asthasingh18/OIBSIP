@@ -14,6 +14,7 @@ function App() {
   const [customerName, setCustomerName] = useState("");
   const [customerPhone, setCustomerPhone] = useState("");
   const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("COD");
 
   const [orderMessage, setOrderMessage] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -218,11 +219,13 @@ function App() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
         body: JSON.stringify({
           customerName,
           customerPhone,
           deliveryAddress,
+          paymentMethod,
           items: cart.map((pizza) => ({
             pizzaId: pizza._id,
             quantity: pizza.quantity,
@@ -237,9 +240,33 @@ function App() {
           data.message || "Failed to place order."
         );
       }
+      let finalOrder = data.order;
+
+      // Simulate online payment only when Online is selected
+      if (paymentMethod === "Online") {
+        const paymentResponse = await fetch(
+          `${API_URL}/orders/${data.order._id}/mock-payment`,
+          {
+            method: "POST",
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+
+        const paymentData = await paymentResponse.json();
+
+        if (!paymentResponse.ok) {
+          throw new Error(
+            paymentData.message || "Demo payment failed."
+          );
+        }
+
+        finalOrder = paymentData.order;
+      }
 
       setOrderMessage(
-        `Order placed successfully! Order ID: ${data.order._id}`
+        `Order placed successfully! Order ID: ${finalOrder._id}`
       );
 
       setCart([]);
@@ -697,6 +724,41 @@ function App() {
                     rows="3"
                     required
                   />
+                  <div className="payment-method">
+                    <h3>Payment Method</h3>
+
+                    <label>
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="COD"
+                        checked={paymentMethod === "COD"}
+                        onChange={(event) =>
+                          setPaymentMethod(event.target.value)
+                        }
+                      />
+                      Cash on Delivery
+                    </label>
+
+                    <label>
+                      <input
+                        type="radio"
+                        name="paymentMethod"
+                        value="Online"
+                        checked={paymentMethod === "Online"}
+                        onChange={(event) =>
+                          setPaymentMethod(event.target.value)
+                        }
+                      />
+                      Mock Online Payment (Demo)
+                    </label>
+
+                    {paymentMethod === "Online" && (
+                      <p>
+                        Demo payment only. No real money will be charged.
+                      </p>
+                    )}
+                  </div>
 
                   <button
                     type="submit"
@@ -742,6 +804,16 @@ function App() {
 
                       <strong>Customer:</strong>
                       <p>{order.customerName}</p>
+
+                      <strong>Payment Method:</strong>
+                      <p>
+                        {order.paymentMethod === "Online"
+                          ? "Mock Online Payment"
+                          : "Cash on Delivery"}
+                      </p>
+
+                      <strong>Payment Status:</strong>
+                      <p>{order.paymentStatus || "Pending"}</p>
 
                       <strong>Items:</strong>
 

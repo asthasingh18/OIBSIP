@@ -3,6 +3,11 @@ const mongoose = require("mongoose");
 
 const orderSchema = new mongoose.Schema(
   {
+    userId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "User",
+      default: null,
+    },
     customerName: {
       type: String,
       required: true,
@@ -50,6 +55,24 @@ const orderSchema = new mongoose.Schema(
       type: String,
       enum: ["Pending", "Confirmed", "Preparing", "Out for Delivery", "Delivered", "Cancelled"],
       default: "Pending",
+    },
+    paymentMethod: {
+      type: String,
+      enum: ["COD", "Online"],
+      default: "COD",
+    },
+    paymentStatus: {
+      type: String,
+      enum: ["Pending", "Paid", "Failed", "Refunded"],
+      default: "Pending",
+    },
+    paymentId: {
+      type: String,
+      default: null,
+    },
+    paymentReference: {
+      type: String,
+      default: null,
     },
   },
   {
