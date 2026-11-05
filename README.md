@@ -26,9 +26,9 @@ The repository is organized into three levels, showcasing my progression from fr
 
 | Project | Overview | Tech Stack |
 |---|---|---|
-| [Mitti & More](./WebDevelopment-Level1-Task1-LandingPage/) | An elegant landing page for a handmade pottery and homeware brand. | HTML, CSS |
+| [Mitti & More](./WebDev-L1-LandingPage/) | An elegant landing page for a handmade pottery and homeware brand. | HTML, CSS |
 | [Personal Portfolio](./WebDevelopment-Level1-Task2-Portfolio/) | A personal website introducing my developer profile and skills. | HTML, CSS |
-| [Temperature Converter](./WebDevelopment-Level1-Task3-TemperatureConverter/) | A utility that converts temperature values between different units. | HTML, CSS, JavaScript |
+| [Temperature Converter](./WebDev-L1-TemperatureConverter/) | A utility that converts temperature values between different units. | HTML, CSS, JavaScript |
 
 ### 02 — Level 2 | Interactive Development
 
@@ -36,10 +36,10 @@ The repository is organized into three levels, showcasing my progression from fr
 
 | Project | Overview | Tech Stack |
 |---|---|---|
-| [Calculator](./WebDevelopment-Level2-Task1-Calculator/) | A functional calculator for everyday arithmetic operations. | HTML, CSS, JavaScript |
-| [Tribute Page](./WebDevelopment-Level2-Task2-TributePage/) | A dedicated webpage celebrating an inspirational personality. | HTML, CSS |
-| [To-Do App](./WebDevelopment-Level2-Task3-TodoApp/) | A task management application for organizing daily activities. | HTML, CSS, JavaScript |
-| [Login Authentication](./WebDevelopment-Level2-Task4-LoginAuthentication/) | A web application featuring user registration and login functionality. | Python, Flask, SQLite, HTML, CSS |
+| [Calculator](./WebDev-L2-Calculator/) | A functional calculator for everyday arithmetic operations. | HTML, CSS, JavaScript |
+| [Tribute Page](./WebDev-L2-TributePage/) | A dedicated webpage celebrating an inspirational personality. | HTML, CSS |
+| [To-Do App](./WebDev-L2-TodoApp/) | A task management application for organizing daily activities. | HTML, CSS, JavaScript |
+| [Login Authentication](./WebDev-L2-LoginAuthentication/) | A web application featuring user registration and login functionality. | Python, Flask, SQLite, HTML, CSS |
 
 ### 03 — Level 3 | Full-Stack Engineering
 
@@ -48,7 +48,7 @@ The repository is organized into three levels, showcasing my progression from fr
 <details>
 <summary><strong>SliceCraft — Pizza Delivery Application</strong></summary>
 
-[Open Project Folder](./WebDevelopment-Level3-Task1-PizzaDelivery/)
+[Open Project Folder](./WebDev-L3-PizzaDelivery/)
 
 A full-stack pizza ordering platform designed to provide customers with a smooth ordering experience and administrators with order management capabilities.
 
